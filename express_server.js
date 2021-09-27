@@ -1,7 +1,14 @@
 const express = require("express");
+// const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+function generateRandomString(length = 6) {
+  Math.random().toString(20).substr(2, length)
+};
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -12,9 +19,18 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+app.post("/urls", (req, res) => {
+  console.log(req.body);
+  res.send("Ok");
+});
+
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
+});
+
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
 });
 
 app.get("/urls/:shortURL", (req, res) => {
@@ -29,6 +45,7 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
