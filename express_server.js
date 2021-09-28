@@ -13,7 +13,6 @@ const generateRandomString = function(length = 6) {
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
-  "shortURL": "longURL"  
 };
 
 app.get("/", (req, res) => {
