@@ -6,22 +6,36 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
-function generateRandomString(length = 6) {
-  Math.random().toString(20).substr(2, length)
+const generateRandomString = function(length = 6) {
+  return Math.random().toString(36).substr(2, length) 
 };
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
+  "shortURL": "longURL"  
 };
+
+// let key = generateRandomString()
+// console.log("s----", generateRandomString())
+
+// urlDatabase[key] = "shortURL"
+// console.log(urlDatabase)
 
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
 app.post("/urls", (req, res) => {
+  const shortURL = generateRandomString()
+  urlDatabase[shortURL] = req.body.longURL;
   console.log(req.body);
-  res.send("Ok");
+  res.redirect(`/urls/${shortURL}`);
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
 });
 
 app.get("/urls", (req, res) => {
