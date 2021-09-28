@@ -16,12 +16,6 @@ const urlDatabase = {
   "shortURL": "longURL"  
 };
 
-// let key = generateRandomString()
-// console.log("s----", generateRandomString())
-
-// urlDatabase[key] = "shortURL"
-// console.log(urlDatabase)
-
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
