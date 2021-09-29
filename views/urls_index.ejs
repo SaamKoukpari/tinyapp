@@ -27,13 +27,29 @@
             <td><%= url %></td>
             <td><%= urls[url] %></td>
             <td>
-              <form method="POST" action="/urls/<%= url %>/delete">
-              <button type="submit" action="delete" class="btn btn-outline-danger">Delete</button>
+              <form 
+                method="POST" 
+                action="/urls/<%= url %>/delete">
+                <button 
+                  type="submit" 
+                  action="delete" 
+                  class="A btn btn-outline-danger"
+                  >Delete
+                </button>
               </form>
           </td>
-          <td><form action="/urls/<%= url %>"><button type="submit" class="btn btn-outline-primary">Edit</button>
-          <form>
-        </td>
+        
+            <td>
+              <form 
+                action="/urls/<%= url %>">
+                <button 
+                  type="submit" 
+                  class="B btn btn-outline-primary"
+                  >Edit
+                </button>
+              </form>
+            </td>
+
         </tr>
           <% } %>
         </tbody>
