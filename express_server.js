@@ -15,28 +15,33 @@ const generateRandomString = function(length = 6) {
   return Math.random().toString(36).substr(2, length) 
 };
 
-// const findUserByEmail = (email) => {
-//   for (const username in users) {
-//     const user = users[username];
-//     if (user.email === email) {
-//       return user;
-//     }
-//   }
-//   return null;
-// }
+const findUserByEmail = (email) => {
+  for (const username in users) {
+    const user = users[username];
+    if (user.email === email) {
+      return user;
+    }
+  }
+  return null;
+}
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
 };
 
-// const users = {
-//   123: {
-//     id: 123,
-//     email: saamk,
-//     password: abcd,
-//   }
-// }
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple",
+  },
+  "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "monkey"
+  }
+}
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -78,30 +83,26 @@ app.post("/login", (req, res) => {
 //   res.render("secrets", templateVars);
 // });
 
-// app.post('/register', (req, res) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
+app.post('/register', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
 
-//   if (!email || !password) {
-//     return res.status(400).send("email or password cannot be blank");
-//   }
+  if (!email || !password) {
+    return res.status(400).send("email or password cannot be blank");
+  }
 
-//   const user = findUserByEmail(email);
+  const user = findUserByEmail(email);
 
-//   if (user) {
-//     return res.status(400).send("user with that email currently exists");
-//   }
+  if (user) {
+    return res.status(400).send("user with that email currently exists");
+  }
 
-//   const id = Math.floor(Math.random() * 2000) + 1;
-
-//   users[id] = {
-//     id: id,
-//     email: email,
-//     password: password
-//   }
-
-//   res.redirect("urls");
-// });
+  const id = generateRandomString();
+  users[id] = { id, email, password };
+  
+  res.cookie("user_id", id)
+  res.redirect("urls");
+});
 
 app.post("/logout", (req,res) => {
   // res.cookie('username', req.body.username);
@@ -121,31 +122,42 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
+app.get("/register", (req, res) => {
+  const id = req.cookies.user_id;
+  const user = users[id];
+  const templateVars = {
+    user };
+    res.render("urls_registration", templateVars);
+  });
+
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
 
 app.get("/urls", (req, res) => {
-  const username = req.cookies.username
+  const id = req.cookies.user_id
+  const user = users[id];
   const templateVars = { 
-    username,
+    user,
     urls: urlDatabase };
     res.render("urls_index", templateVars);
   });
   
 app.get("/urls/new", (req, res) => {
-  const username = req.cookies.username
+  const id = req.cookies.user_id
+  const user = users[id];
   const templateVars = { 
-    username };
+    user };
     res.render("urls_new", templateVars);
     // res.redirect("urls");
  });
     
 app.get("/urls/:shortURL", (req, res) => {
-  const username = req.cookies.username;
+  const id = req.cookies.user_id;
+  const user = users[id];
   const templateVars = { 
-    username,
+    user,
     shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
     res.render("urls_show", templateVars);
     res.redirect("urls");

@@ -13,11 +13,11 @@
     </div>
 
     <div class="d-flex flex-row-reverse">
-      <% if(username) { %>
+      <% if(user) { %>
         <form 
           method="POST" 
           action="/logout"> 
-          <span>Logged in as: <%= username %> </span> 
+          <span>Logged in as: <%= user %> </span> 
           <input 
             class="btn btn-outline-dark" 
             type="submit" 
