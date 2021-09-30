@@ -17,7 +17,7 @@
         <form 
           method="POST" 
           action="/logout"> 
-          <span>Logged in as: <%= user %> </span> 
+          <span>Logged in as: <%= user.email %> </span> 
           <input 
             class="btn btn-outline-dark" 
             type="submit" 
@@ -25,20 +25,23 @@
         </form>
         
       <% } else { %>
-      <form 
-        method="POST" 
-        action="/login"> 
-        <input 
-          name="username" 
-          placeholder="Username"/>
-        <input 
-          class="btn btn-outline-dark" 
-          type="submit" 
-          value="Log In">
-      </form>
-      <% } %>
-    </div>
+        <div class="navbar-nav">
+          <a 
+            class="nav-item nav-link" 
+            href="/login">Log In</a>
+          <a 
+            class="nav-item nav-link" 
+            href="/register">Register</a>
+        </div>
 
+
+<!-- 
+        <a href="/login"
+           class="navbar-nav">Log In</a>
+           <a href="/register"
+           class="btn btn-outline-light">Register</a> -->
+      <% } %>
+       </div>
     </div>
   </nav>
 </header>
