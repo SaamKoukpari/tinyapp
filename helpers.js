@@ -1,21 +1,5 @@
-
-const userDB = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple",
-  },
-  "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "monkey"
-  }  
-};
-
-
-
 const findUserByEmail = (email, database) => {
-  for (const user_id in userDB) {
+  for (const user_id in database) {
     const user = database[user_id];
     if (user.email === email) {
       return user;
@@ -24,4 +8,19 @@ const findUserByEmail = (email, database) => {
   return null;
 }; 
 
-module.exports = { findUserByEmail };
+const generateRandomString = function(length = 6) {
+  return Math.random().toString(36).substr(2, length) 
+};  
+
+const urlsForUser = (id, database) => {
+  const userUrlObj = {};  
+
+  for (const shortURL in database) {
+    if (database[shortURL].userID === id) {
+      userUrlObj[shortURL] = database[shortURL];
+    };   
+  };
+    return userUrlObj;
+};
+
+module.exports = { findUserByEmail, generateRandomString, urlsForUser };

@@ -1,6 +1,6 @@
 const express = require("express");
-const { findUserByEmail } = require("./helpers")
-const cookieSession = require('cookie-session')
+const { findUserByEmail, generateRandomString, urlsForUser } = require("./helpers");
+const cookieSession = require('cookie-session');
 const morgan = require('morgan');
 const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
@@ -17,14 +17,14 @@ app.use(cookieSession({
 
 //////////////////////////////////////////////////////////////
 const urlDatabase = {
-    "b2xVn2": {
-      longURL: "http://www.lighthouselabs.ca",
-      userID: "aJROIx"
-    },
-    "9sm5xK": {
-      longURL: "http://www.google.com",
-      userID: "aJROIx"
-    }
+  "b2xVn2": {
+    longURL: "http://www.lighthouselabs.ca",
+    userID: "aJROIx"
+  },
+  "9sm5xK": {
+    longURL: "http://www.google.com",
+    userID: "aJROIx"
+  }
 };
 
 const userDB = {
@@ -38,31 +38,6 @@ const userDB = {
     email: "user2@example.com",
     password: "monkey"
   }  
-};
-//////////////////////////////////////////////////////////////
-const generateRandomString = function(length = 6) {
-  return Math.random().toString(36).substr(2, length) 
-};
-
-// const findUserByEmail = (email, database) => {
-//   for (const user_id in userDB) {
-//     const user = database[user_id];
-//     if (user.email === email) {
-//       return user;
-//     }
-//   }
-//   return null;
-// };  
-  
-const urlsForUser = (id) => {
-  const userUrlObj = {};  
-
-  for (const shortURL in urlDatabase) {
-    if (urlDatabase[shortURL].userID === id) {
-      userUrlObj[shortURL] = urlDatabase[shortURL];
-    };   
-  };
-    return userUrlObj;
 };
 //////////////////////////////////////////////////////////////
 app.get("/", (req, res) => {
@@ -152,7 +127,7 @@ app.post("/urls/:shortURL/", (req, res) => {
     return;
   };
 
-  const result =  urlsForUser(userID)
+  const result =  urlsForUser(userID, urlDatabase)
   
   if (result) {
     res.redirect("/urls");
@@ -195,7 +170,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls", (req, res) => {
   const id = req.session["user_id"];
   const user = userDB[id];
-  const urls = urlsForUser(id);
+  const urls = urlsForUser(id, urlDatabase);
   if (!user) {
     return res.status(401).send("please log in")//hrefa>
   };
@@ -241,7 +216,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
     res.status(401).send("please log in");
     return;
   };
-  const result =  urlsForUser(userID)
+  const result =  urlsForUser(userID, urlDatabase)
   
   if (result) {
     delete urlDatabase[shortURL];
