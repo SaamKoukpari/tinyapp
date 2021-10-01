@@ -6,21 +6,21 @@ const findUserByEmail = (email, database) => {
     }
   }
   return null;
-}; 
+};
 
 const generateRandomString = function(length = 6) {
-  return Math.random().toString(36).substr(2, length) 
-};  
+  return Math.random().toString(36).substr(2,length);
+};
 
 const urlsForUser = (id, database) => {
-  const userUrlObj = {};  
+  const userUrlObj = {};
 
   for (const shortURL in database) {
     if (database[shortURL].userID === id) {
       userUrlObj[shortURL] = database[shortURL];
-    };   
-  };
-    return userUrlObj;
+    }
+  }
+  return userUrlObj;
 };
 
 module.exports = { findUserByEmail, generateRandomString, urlsForUser };
