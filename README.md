@@ -4,9 +4,11 @@ TinyApp is a full stack web application inspired by bit.ly and built with Node a
 
 ## Final Product
 
-!["screenshot description"](#)
+!["screenshot of login page"](https://github.com/SaamKoukpari/tinyapp/blob/master/docs/loginPage.png?raw=true)
 
-!["screenshot description"](#)
+!["screenshot of registration page"](https://github.com/SaamKoukpari/tinyapp/blob/master/docs/registrationPage.png?raw=true)
+
+!["screenshot of urls page"](https://github.com/SaamKoukpari/tinyapp/blob/master/docs/urlsPage.png?raw=true) 
 
 ## Dependencies
 
