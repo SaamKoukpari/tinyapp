@@ -1,6 +1,6 @@
 //Dependencies//
 const express = require("express");
-const { findUserByEmail, generateRandomString, urlsForUser } = require("./helpers");
+const { findUserByEmail, generateRandomString, urlsForUser, isLoggedIn } = require("./helpers");
 const cookieSession = require('cookie-session');
 const morgan = require('morgan');
 const bcrypt = require('bcryptjs');
@@ -48,20 +48,18 @@ app.get("/", (req, res) => {
     res.redirect("/login");
     return;
   }
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 app.get("/login", (req, res) => {
-  // const id = req.session["user_id"];
-  // const user = userDB[id];
+
   if (req.session["user_id"]) {
-    return res.redirect("/urls");//changed /login
+    return res.redirect("/urls");
   }
   
   const templateVars = { user: userDB[req.session["user_id"]] };
 
   res.render("urls_login", templateVars);
-  // res.redirect("urls_registration")
 });
 
 app.post("/login", (req, res) => {
@@ -191,9 +189,15 @@ app.get("/urls/new", (req, res) => {
 });
     
 app.get("/urls/:shortURL", (req, res) => {
+  const currentUser = isLoggedIn(req.session['user_id'], userDB);
   const longURL = urlDatabase[req.params.shortURL];
   if (!longURL) {
     return res.status(403).send("please log in");
+  }
+
+  if (!req.session['user_id'] || req.session['user_id'] !== longURL['userID']) {
+
+    return res.status(400).send(`${currentUser} users do not have access to this URL`);
   }
 
   const id = req.session.user_id;

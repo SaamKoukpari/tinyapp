@@ -23,4 +23,10 @@ const urlsForUser = (id, database) => {
   return userUrlObj;
 };
 
-module.exports = { findUserByEmail, generateRandomString, urlsForUser };
+const isLoggedIn = function(id, database) {
+  const currentUser = id ? `${database[id]['email']}` : 'Unregistered';
+  
+  return currentUser;
+};
+
+module.exports = { findUserByEmail, generateRandomString, urlsForUser, isLoggedIn };
