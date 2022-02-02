@@ -40,6 +40,7 @@ const userDB = {
     password: "monkey"
   }
 };
+
 //Endpoints//
 app.get("/", (req, res) => {
   const id = req.session["user_id"];
